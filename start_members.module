@@ -1,3 +1,18 @@
-<?php 
-
-?>
+<?php
+function start_members_help($path, $arg) {
+	
+	$output = '';
+	
+	switch ($path){
+	
+		case "admin/help#start_members":
+			
+			$output = '<p>'. t("Help side for start members") .'</p>';
+			
+			break;
+	
+	} 
+	
+	return $output;
+	
+}// function start_members_help
