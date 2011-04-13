@@ -1,4 +1,4 @@
-Name = Start members
-Description = A listing of Start Members throughout the organization
-Core = 6.x
+name = Start members
+description = A listing of Start Members throughout the organization
+core = 6.x
 package = "0-Start"
