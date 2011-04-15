@@ -41,13 +41,14 @@ function start_members_block($op = 'list', $delta = 0, $edit = array()){
 function start_members_all(){
 
 	//init content
-	$page_content = '';
+	$page_content = $_domain .'br />';
 	
 	//query to get all users
 	$q = db_query('
 					SELECT name
 					FROM {users}
 				');
+	
 	
 	//Loop and add to page_content
 	while ($user = db_fetch_array($q)){
