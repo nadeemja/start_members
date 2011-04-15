@@ -54,7 +54,7 @@ function start_members_menu(){
 	$items['start_members'] = array(
 		'title' 			=> 'Start members',
 		'page callback' 	=> 'start_members_all',
-		'acces arguments' 	=> array('access start members'),
+		'access arguments' 	=> array('access start members'),
 		'type'				=> MENU_CALLBACK
 	);
 	
