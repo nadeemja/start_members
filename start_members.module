@@ -46,11 +46,11 @@ function start_members_all(){
 	//query to get all users
 	$q = db_query('
 					SELECT name
-					From {users}
+					FROM {users}
 				');
 	
 	//Loop and add to page_content
-	while ($user = mysql_fetch_array($q)){
+	while ($user = db_fetch_array($q)){
 		
 		$page_content .= "$user[name]<br />";
 	}
