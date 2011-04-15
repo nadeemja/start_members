@@ -1,4 +1,8 @@
 <?php
+
+//Globals
+global $_domain;
+
 //Help function
 function start_members_help($path, $arg) {
 	
