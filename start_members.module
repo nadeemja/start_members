@@ -21,7 +21,7 @@ function start_members_help($path, $arg) {
 //Set perimissions
 function start_members_perm() {
 
-	return array('Access Start Members');
+	return array('access start members');
 	
 } // function start_members_perm()
 
@@ -43,4 +43,20 @@ function start_members_all(){
 	$page_content = 'Hello!';
 	
 	return $page_content;
+}//_all()
+
+//Menu links
+function start_members_menu(){
+	
+	$items = array();
+	
+	//all page
+	$items['start_members'] = array(
+		'title' 			=> 'Start members',
+		'page callback' 	=> 'start_members_all',
+		'acces arguments' 	=> array('access start members'),
+		'type'				=> MENU_CALLBACK
+	);
+	
+	return $items;
 }
