@@ -35,4 +35,6 @@ function start_members_block($op = 'list', $delta = 0, $edit = array()){
 		$block[0]["info"] = t("Memberlist Block");
 	}
 
-}
+}//function _block
+
+//define
