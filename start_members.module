@@ -37,4 +37,10 @@ function start_members_block($op = 'list', $delta = 0, $edit = array()){
 
 }//function _block
 
-//define
+//define page
+function start_members_all(){
+
+	$page_content = 'Hello!';
+	
+	return $page_content;
+}
