@@ -2,3 +2,4 @@ name = Start members
 description = A listing of Start Members throughout the organization
 core = 6.x
 package = "0-Start"
+version = 0.1
