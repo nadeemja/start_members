@@ -41,7 +41,8 @@ function start_members_block($op = 'list', $delta = 0, $edit = array()){
 function start_members_all(){
 
 	//init content
-	$page_content = $_domain .'br />';
+	$page_content = '';
+	$page_content .= print_r($_domain);
 	
 	//query to get all users
 	$q = db_query('
