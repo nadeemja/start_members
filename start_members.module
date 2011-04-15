@@ -55,7 +55,7 @@ function start_members_all(){
 		$page_content .= "$user[name]<br />";
 	}
 	
-	return dpm($conf);
+	return $page_content;
 }//_all()
 
 //Menu links
