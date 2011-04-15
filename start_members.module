@@ -1,8 +1,4 @@
 <?php
-
-//Globals
-global $_domain;
-
 //Help function
 function start_members_help($path, $arg) {
 	
@@ -46,7 +42,7 @@ function start_members_all(){
 
 	//init content
 	$page_content = '';
-	$page_content .= dpm($_domain);
+	$page_content .= dpm($conf);
 	
 	//query to get all users
 	$q = db_query('
