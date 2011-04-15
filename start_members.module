@@ -40,7 +40,20 @@ function start_members_block($op = 'list', $delta = 0, $edit = array()){
 //define page
 function start_members_all(){
 
-	$page_content = 'Hello!';
+	//init content
+	$page_content = '';
+	
+	//query to get all users
+	$q = db_query('
+					SELECT name
+					From {users}
+				');
+	
+	//Loop and add to page_content
+	while ($user = mysql_fetch_array($q)){
+		
+		$page_content .= "$user[name]<br />";
+	}
 	
 	return $page_content;
 }//_all()
