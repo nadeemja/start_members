@@ -40,9 +40,13 @@ function start_members_block($op = 'list', $delta = 0, $edit = array()){
 //define page
 function start_members_all(){
 
+	
+	//register global
+	global $_domain;
+	
 	//init content
 	$page_content = '';
-	$page_content .= "Hei!";
+	$page_content .= dpm($_domain);
 	
 	//query to get all users
 	$q = db_query('
