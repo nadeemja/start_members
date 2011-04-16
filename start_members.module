@@ -62,8 +62,9 @@ function start_members_all(){
 	//Loop and add to page_content
 	while ($user = db_fetch_array($q)){
 		
-		$page_content .= "$user[name]<br />";
+		$page_content .= dpm($user);
 	}
+	
 	
 	return $page_content;
 }//_all()
