@@ -51,10 +51,12 @@ function start_members_all(){
 	//query to get all users
 	$q = db_query("
 					SELECT *
-					FROM {users}, {users_roles}, {role}
-					WHERE {role.name} = 'startntnu.no'
+					FROM {users}, {users_roles}, {role},{node},{og_uid}
+					WHERE {role.name} = '$_domain[subdomain]'
 					AND {role.rid} = {users_roles.rid}
 					AND {users_roles.uid} = {users.uid}
+					AND {og_uid.uid} = {users.uid}
+					AND {node.nid} = {og_uid.nid}
 					
 				");
 	
