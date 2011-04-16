@@ -40,20 +40,31 @@ function start_members_block($op = 'list', $delta = 0, $edit = array()){
 //define page
 function start_members_all(){
 
+	
+	//register global
+	global $_domain;
+	
 	//init content
 	$page_content = '';
+	$page_content .= dpm($_domain);
 	
 	//query to get all users
-	$q = db_query('
-					SELECT name
-					FROM {users}
-				');
+	$q = db_query("
+					SELECT *
+					FROM {users}, {users_roles}, {role}
+					WHERE {role.name} = 'startntnu.no'
+					AND {role.rid} = {users_roles.rid}
+					AND {users_roles.uid} = {users.uid}
+					
+				");
+	
 	
 	//Loop and add to page_content
 	while ($user = db_fetch_array($q)){
 		
-		$page_content .= "$user[name]<br />";
+		$page_content .= dpm($user);
 	}
+	
 	
 	return $page_content;
 }//_all()
