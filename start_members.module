@@ -50,8 +50,12 @@ function start_members_all(){
 	
 	//query to get all users
 	$q = db_query('
-					SELECT name
-					FROM {users}
+					SELECT *
+					FROM {users}, {users_roles}, {role}
+					WHERE {role.name] = 'startntnu.no'
+					AND {role.rid} = {users_roles.rid}
+					AND {users_roles.uid} = {users.uid}
+					
 				');
 	
 	
