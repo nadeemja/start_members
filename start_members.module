@@ -52,7 +52,7 @@ function start_members_all(){
 	$q = db_query("
 					SELECT *
 					FROM {users}, {users_roles}, {role}
-					WHERE {role.name] = 'startntnu.no'
+					WHERE {role.name} = 'startntnu.no'
 					AND {role.rid} = {users_roles.rid}
 					AND {users_roles.uid} = {users.uid}
 					
