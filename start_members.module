@@ -46,7 +46,7 @@ function start_members_all(){
 	
 	//init content
 	$page_content = '';
-	$page_content .= dpm($_domain);
+	$page_content .= dprint_r($_domain);
 	
 	//query to get all users
 	$q = db_query("
