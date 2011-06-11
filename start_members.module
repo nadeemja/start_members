@@ -41,7 +41,7 @@ function start_members_block($op = 'list', $delta = 0, $edit = array()){
 function start_members_all(){
 
 	
-	//register global
+	//This variable comes from the domain-access module and tells us the current domain
 	global $_domain;
 	
 	//init content
