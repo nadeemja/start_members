@@ -69,7 +69,7 @@ function start_members_all(){
 	return $page_content;
 }//_all()
 
-//This functions automatically pulls the repository from github whenever it is updated
+//This functions automatically pulls the master branch from the repository at github whenever it is updated
 function start_members_git_pull(){
 	return `git pull`;
 }
