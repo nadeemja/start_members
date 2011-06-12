@@ -51,7 +51,7 @@ function start_members_all(){
 	//query to get all users
 	$q = db_query("
 					SELECT *
-					FROM {users_roles}, {role}, {users}
+					FROM {users_roles}, {role}, {users}, {node}, {og_uid}
 					WHERE {role.name} = '$_domain[subdomain]'
 					AND {role.rid} = {users_roles.rid}
 					AND {users_roles.uid} = {users.uid}
