@@ -51,7 +51,7 @@ function start_members_all(){
 	//query to get all users
 	$q = db_query("
 					SELECT *
-					FROM {users_roles}, {role},{users}
+					FROM {users_roles}, {role}, {users}
 					WHERE {role.name} = '$_domain[subdomain]'
 					AND {role.rid} = {users_roles.rid}
 					AND {users_roles.uid} = {users.uid}
@@ -69,6 +69,11 @@ function start_members_all(){
 	return $page_content;
 }//_all()
 
+//This functions automatically pulls the repository from github whenever it is updated
+function start_members_git_pull(){
+	return `git pull`;
+}
+
 //Menu links
 function start_members_menu(){
 	
@@ -79,6 +84,14 @@ function start_members_menu(){
 		'title' 			=> 'Start members',
 		'page callback' 	=> 'start_members_all',
 		'access arguments' 	=> array('access start members'),
+		'type'				=> MENU_CALLBACK
+	);
+	
+	//Git pull page
+	$items['start_members/github'] = array(
+		'title' 			=> 'Start members github pull',
+		'page callback' 	=> 'start_members_git_pull',
+		'access arguments' 	=> array(),
 		'type'				=> MENU_CALLBACK
 	);
 	
