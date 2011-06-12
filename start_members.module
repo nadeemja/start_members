@@ -91,7 +91,7 @@ function start_members_menu(){
 	$items['start_members/github'] = array(
 		'title' 			=> 'Start members github pull',
 		'page callback' 	=> 'start_members_git_pull',
-		'access arguments' 	=> array(),
+		'access arguments' 	=> array('access start members'),
 		'type'				=> MENU_CALLBACK
 	);
 	
