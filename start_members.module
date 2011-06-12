@@ -69,11 +69,6 @@ function start_members_all(){
 	return $page_content;
 }//_all()
 
-//This functions automatically pulls the master branch from the repository at github whenever it is updated
-function start_members_git_pull(){
-	return `git pull`;
-}
-
 //Menu links
 function start_members_menu(){
 	
@@ -83,14 +78,6 @@ function start_members_menu(){
 	$items['start_members'] = array(
 		'title' 			=> 'Start members',
 		'page callback' 	=> 'start_members_all',
-		'access arguments' 	=> array('access start members'),
-		'type'				=> MENU_CALLBACK
-	);
-	
-	//Git pull page
-	$items['start_members/github'] = array(
-		'title' 			=> 'Start members github pull',
-		'page callback' 	=> 'start_members_git_pull',
 		'access arguments' 	=> array('access start members'),
 		'type'				=> MENU_CALLBACK
 	);
