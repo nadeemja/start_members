@@ -48,32 +48,19 @@ function start_members_all(){
 	$page_content = '';
 	$page_content .= dpm($_domain);
 	
-	//query to get all users
-	$q = db_query("
-					SELECT *
-					FROM {users_roles}, {role}, {users}
-					WHERE {role.name} = '$_domain[subdomain]'
-					AND {role.rid} = {users_roles.rid}
-					AND {users_roles.uid} = {users.uid}
-				");
-	
-	
 	//alternate query
 	$q = db_query("
 					SELECT 
-						users.uid, name, mail, is_admin, node.nid, og_description, title, profile_values.value 
+						users.uid, name, mail, is_admin, node.nid, og_description, title 
 					
 					FROM 
-						users, og_uid, og, node, profile_values 
+						users, og_uid, og, node
 					
 					WHERE 
 						users.uid = og_uid.uid 
 						AND og_uid.nid = og.nid 
 						AND og.nid = node.nid 
 						AND node.uid != users.uid 
-						AND profile_values.uid = users.uid 
-						AND profile_values.fid IN ("6","2","3")
-							
 					
 				");
 		
