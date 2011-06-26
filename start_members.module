@@ -68,22 +68,29 @@ function start_members_all(){
 	while ($user = db_fetch_array($q)){
 		
 		//get user profile field values
-		$q = db_query("
+		$q2 = db_query("
 						SELECT
-							*
+							fid, value, uid
 						FROM
 							profile_values
 						
 						WHERE
-							profile_values.uid = users.uid
+							profile_values.uid = $user[uid]
+						AND fid IN (6,2,3)
 					");
 		
-		$profile_values = db_fetch_array($q);
+		while ($profile_values = db_fetch_array($q2))
+			{
+			
+			switch($profile_values["fid"]){
+				
+				case 2:
+					$user["first_name"] = $profile_values["value"];
+			}
+			$user = array_merge($user, $profile_values);	
+		}
 		
-		$user[]["profile_values"] = $profile_values;
-		
-		$page_content .= dpm($user);
-		
+		$page_content .= dpm($user);	
 		
 	}
 	
