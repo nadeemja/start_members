@@ -86,7 +86,18 @@ function start_members_all(){
 				
 				case 2:
 					$user["first_name"] = $profile_values["value"];
+				break;
+				
+				case 3:
+					$user["last_name"] = $profile_values["value"];
+				break;
+				
+				case 6:
+					$user["date_of_birth"] = $profile_values["value"];
+				break;
+				
 			}
+			
 			$user = array_merge($user, $profile_values);	
 		}
 		
