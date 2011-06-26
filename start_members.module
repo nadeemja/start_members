@@ -72,7 +72,8 @@ function start_members_all(){
 						AND og.nid = node.nid 
 						AND node.uid != users.uid 
 						AND profile_values.uid = users.uid 
-						AND profile_values.fid = 6	
+						AND profile_values.fid in (6,2,3)
+							
 					
 				");
 		
