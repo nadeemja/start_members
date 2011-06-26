@@ -58,10 +58,31 @@ function start_members_all(){
 				");
 	
 	
+	//alternate query
+	$q = db_query("
+					SELECT 
+						users.uid, name, mail, is_admin, node.nid, og_description, title, profile_values.value 
+					
+					FROM 
+						users, og_uid, og, node, profile_values 
+					
+					WHERE 
+						users.uid = og_uid.uid 
+						AND og_uid.nid = og.nid 
+						AND og.nid = node.nid 
+						AND node.uid != users.uid 
+						AND profile_values.uid = users.uid 
+						AND profile_values.fid = 6	
+					
+				");
+		
 	//Loop and add to page_content
 	while ($user = db_fetch_array($q)){
 		
+		
 		$page_content .= dpm($user);
+		
+		
 	}
 	
 
