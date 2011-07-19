@@ -93,7 +93,7 @@ function start_members_all(){
 				break;
 				
 				case 6:
-					$user["date_of_birth"] = print_r(unserialize($profile_values["value"]));
+					$user["date_of_birth"] = unserialize($profile_values["value"]);
 				break;
 				
 			}
@@ -101,11 +101,20 @@ function start_members_all(){
 			$user = array_merge($user, $profile_values);	
 		}
 		
+		
+		
 		//convert array keys to variables
 		foreach($user as $key=>$value) { $$key = $value; }
 			
-		$page_content .= dpm($user);
-		$page_content .= "<tr><td>$first_name</td><td>$last_name</td><td>$date_of_birth</td><td>$title</td><td></td></tr>";	
+			if (is_array($date_of_birth)){
+				$date_of_birth = implode("/", $date_of_birth);		
+			}
+			$page_content .= dpm($user);
+			$page_content .= "<tr><td>$first_name</td>";
+			$page_content .= "<td>$last_name</td>";
+			$page_content .= "<td>$date_of_birth</td>";
+			$page_content .= "<td>$title</td>";
+			$page_content .= "<td><a href=http://startntnu.no/user/$uid/edit>$name</a></td></tr>";	
 		
 	}
 	
