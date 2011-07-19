@@ -93,7 +93,7 @@ function start_members_all(){
 				break;
 				
 				case 6:
-					$user["date_of_birth"] = json_decode($profile_values["value"], TRUE);
+					$user["date_of_birth"] = unserialize($profile_values["value"]);
 				break;
 				
 			}
