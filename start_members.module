@@ -45,7 +45,7 @@ function start_members_all(){
 	global $_domain;
 	
 	//init content
-	$page_content = '';
+	$page_content = '<table>';
 	$page_content .= dpm($_domain);
 	
 	//alternate query
@@ -60,7 +60,7 @@ function start_members_all(){
 						users.uid = og_uid.uid 
 						AND og_uid.nid = og.nid 
 						AND og.nid = node.nid 
-						AND node.uid != users.uid 
+						#AND node.uid != users.uid 
 					
 				");
 		
@@ -101,10 +101,16 @@ function start_members_all(){
 			$user = array_merge($user, $profile_values);	
 		}
 		
-		$page_content .= dpm($user);	
+		//convert array keys to variables
+		foreach($user as $key=>$value) { $$key = $value; }
+			
+		$page_content .= dpm($user);
+		$page_content .= "<tr><td>$first_name</td><td>$last_name</td><td>$date_of_birth</td><td>$title</td><td></td></tr>";	
 		
 	}
 	
+	//close table
+	$page_content .= "</table>";
 
 	return $page_content;
 }//_all()
