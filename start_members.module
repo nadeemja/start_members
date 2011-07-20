@@ -43,29 +43,49 @@ function start_members_all(){
 	
 	//This variable comes from the domain-access module and tells us the current domain
 	global $_domain;
+	global $user;
 	
 	//init content
 	$page_content = '<table>';
 	$page_content .= dpm($_domain);
+	$page_content .= dpm($user);
 	
 	//alternate query
 	$q = db_query("
 					SELECT 
-						users.uid, name, mail, is_admin, node.nid, og_description, title 
+						users.uid, users.name, mail, is_admin, node.nid, og_description, title 
 					
 					FROM 
-						users, og_uid, og, node
+						users
 					
-					WHERE 
-						users.uid = og_uid.uid 
-						AND og_uid.nid = og.nid 
-						AND og.nid = node.nid 
-						#AND node.uid != users.uid 
+					LEFT JOIN users_roles
+						ON users.uid = users_roles.uid
+						
+					LEFT JOIN role
+						ON users_roles.rid = role.rid
+						
+					LEFT JOIN og_uid
+						ON users.uid = og_uid.uid 
+					
+					LEFT JOIN og
+						ON og_uid.nid = og.nid
+					
+					LEFT JOIN node 
+						ON og.nid = node.nid 
+						
+					WHERE role.name = '$_domain[subdomain]'
+					
+					GROUP BY
+						users.uid
+						
+					ORDER BY 
+						name ASC
+					
 					
 				");
 		
 	//Loop and add to page_content
-	while ($user = db_fetch_array($q)){
+	while ($u = db_fetch_array($q)){
 		
 		//get user profile field values
 		$q2 = db_query("
@@ -75,8 +95,8 @@ function start_members_all(){
 							profile_values
 						
 						WHERE
-							profile_values.uid = $user[uid]
-						AND fid IN (6,2,3)
+							profile_values.uid = $u[uid]
+							AND fid IN (6,2,3)
 					");
 		
 		while ($profile_values = db_fetch_array($q2))
@@ -85,37 +105,42 @@ function start_members_all(){
 			switch($profile_values["fid"]){
 				
 				case 2:
-					$user["first_name"] = $profile_values["value"];
+					$u["first_name"] = $profile_values["value"];
 				break;
 				
 				case 3:
-					$user["last_name"] = $profile_values["value"];
+					$u["last_name"] = $profile_values["value"];
 				break;
 				
 				case 6:
-					$user["date_of_birth"] = unserialize($profile_values["value"]);
+					$u["date_of_birth"] = unserialize($profile_values["value"]);
 				break;
 				
 			}
 			
-			$user = array_merge($user, $profile_values);	
+			$u = array_merge($u, $profile_values);	
 		}
 		
 		
 		
 		//convert array keys to variables
-		foreach($user as $key=>$value) { $$key = $value; }
+		foreach($u as $key=>$value) { $$key = $value; }
 			
 			if (is_array($date_of_birth)){
 				$date_of_birth = implode("/", $date_of_birth);		
 			}
-			$page_content .= dpm($user);
+			$page_content .= dpm($u);
 			$page_content .= "<tr><td>$first_name</td>";
 			$page_content .= "<td>$last_name</td>";
 			$page_content .= "<td>$date_of_birth</td>";
 			$page_content .= "<td>$title</td>";
-			$page_content .= "<td><a href=http://startntnu.no/user/$uid/edit>$name</a></td></tr>";	
-		
+			
+			if(user_access("administer users")){
+				$page_content .= "<td><a href=http://startntnu.no/user/$uid/edit>$name</a></td>";
+			}
+			
+			$page_content .= "</tr>";	
+			
 	}
 	
 	//close table
