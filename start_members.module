@@ -180,7 +180,7 @@ function start_members_all(){
 	
 	//Generate members listing function
 	
-	function members_listing($members, $type){
+	function members_listing($members, $type, $title){
 	
 		//Return if it's not an array
 		if(!is_array($members[$type])){
@@ -189,7 +189,8 @@ function start_members_all(){
 			
 			}
 		//Styret
-		$page_content = "<h2>Styret</h2><table>";
+		$page_content = "<table class='memberlisting'>";
+		$page_content .= "<h2>$title</h2><table>";
 		$page_content .= "<tr>";
 		$page_content .= "<th>Fornavn</th>";
 		$page_content .= "<th>Etternavn</th>";
@@ -214,16 +215,16 @@ function start_members_all(){
 	}
 	
 	//styret
-	$page_content .= members_listing($members, "Styret");
+	$page_content .= members_listing($members, "Styret", "Styret");
 	
 	//Gruppeledere
-	$page_content .= members_listing($members, "Gruppeleder");
+	$page_content .= members_listing($members, "Gruppeleder", "Gruppeledere");
 	
 	//Medlemmer
-	$page_content .= members_listing($members, "Medlem");
+	$page_content .= members_listing($members, "Medlem", "Medlemmer");
 	
 	//Permisjon
-	$page_content .= members_listing($members, "Permisjon");
+	$page_content .= members_listing($members, "Permisjon", "På Permisjon");
 	
 	return $page_content;
 }//_all()
