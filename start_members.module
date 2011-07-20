@@ -45,15 +45,10 @@ function start_members_all(){
 	global $_domain;
 	global $user;
 	
-	//init content
-	$page_content = '<table>';
-	$page_content .= dpm($_domain);
-	$page_content .= dpm($user);
-	
 	//alternate query
 	$q = db_query("
 					SELECT 
-						users.uid, users.name, mail, is_admin, node.nid, og_description, title 
+						users.uid, users.name, mail
 					
 					FROM 
 						users
@@ -63,15 +58,6 @@ function start_members_all(){
 						
 					LEFT JOIN role
 						ON users_roles.rid = role.rid
-						
-					LEFT JOIN og_uid
-						ON users.uid = og_uid.uid 
-					
-					LEFT JOIN og
-						ON og_uid.nid = og.nid
-					
-					LEFT JOIN node 
-						ON og.nid = node.nid 
 						
 					WHERE role.name = '$_domain[subdomain]'
 					
@@ -96,7 +82,7 @@ function start_members_all(){
 						
 						WHERE
 							profile_values.uid = $u[uid]
-							AND fid IN (6,2,3)
+							AND fid IN (6,2,3,12)
 					");
 		
 		while ($profile_values = db_fetch_array($q2))
@@ -116,36 +102,129 @@ function start_members_all(){
 					$u["date_of_birth"] = unserialize($profile_values["value"]);
 				break;
 				
+				case 12:
+					$u["stilling"] = $profile_values["value"];
+				break;
+				
 			}
 			
 			$u = array_merge($u, $profile_values);	
 		}
 		
+		//get users organic group membership
+		$query_organic_groups = db_query("
 		
+							SELECT
+								is_admin, node.nid, og_description, title
+							
+							FROM 
+								og_uid
+													
+							LEFT JOIN og
+								ON og_uid.nid = og.nid
+					
+							LEFT JOIN node 
+								ON og.nid = node.nid 
+							
+							WHERE og_uid.uid = '$u[uid]'
+							AND node.uid != '$u[uid]' 
+		");
 		
+		// Put organic groups into array
+		while ($organic_group_values = db_fetch_array($query_organic_groups))
+			{
+				$u["og"][] = $organic_group_values["title"];	
+			}
+			
+		//See if title is array, and if so make it a comma separated string
+		if (is_array($u["og"])){
+			
+				$u["title"] = implode(", ", $u["og"]);
+			
+			}
+			
 		//convert array keys to variables
-		foreach($u as $key=>$value) { $$key = $value; }
-			
-			if (is_array($date_of_birth)){
-				$date_of_birth = implode("/", $date_of_birth);		
-			}
-			$page_content .= dpm($u);
-			$page_content .= "<tr><td>$first_name</td>";
-			$page_content .= "<td>$last_name</td>";
-			$page_content .= "<td>$date_of_birth</td>";
-			$page_content .= "<td>$title</td>";
-			
-			if(user_access("administer users")){
-				$page_content .= "<td><a href=http://startntnu.no/user/$uid/edit>$name</a></td>";
-			}
-			
-			$page_content .= "</tr>";	
+		foreach($u as $key=>$value) { 
+			$$key = $value; 
+		}
+		
+		//Format date correctly
+		if (is_array($u["date_of_birth"])){
+			$u["date_of_birth"] = implode("/", $u["date_of_birth"]);		
+		}
+		
+		//build array
+		$users[] = $u;
+		
+		//Unset variables that are mistakenly carried over from loop to loop
+		unset($date_of_birth);
+		unset($title);
 			
 	}
 	
-	//close table
-	$page_content .= "</table>";
-
+	//Process users array into membertypes
+	foreach ($users as $member){
+		
+			if(strlen($member["stilling"]) < 2){
+				$members["usortert"][] = $member;
+				}
+				else{
+				
+						$members[$member["stilling"]][] = $member;
+		
+				}
+				
+		}
+	
+	$page_content .= dpm($members);
+	
+	//Generate members listing function
+	
+	function members_listing($members, $type){
+	
+		//Return if it's not an array
+		if(!is_array($members[$type])){
+			
+			return;
+			
+			}
+		//Styret
+		$page_content = "<h2>Styret</h2><table>";
+		$page_content .= "<tr>";
+		$page_content .= "<th>Fornavn</th>";
+		$page_content .= "<th>Etternavn</th>";
+		$page_content .= "<th>Bursdag</th>";
+		$page_content .= "<th>Gruppetilhørighet</th>";
+		$page_content .= "</tr>";
+	
+	
+		foreach($members[$type] as $member){
+		
+				$page_content .= "<tr>";
+				$page_content .="<td>$member[first_name]</td>";
+				$page_content .="<td>$member[last_name]</td>";
+				$page_content .="<td>$member[date_of_birth]</td>";
+				$page_content .="<td>$member[title]</td>";
+				$page_content .= "</tr>";	
+		
+			}
+		$page_content .= "</table>"; 
+	
+		return $page_content;
+	}
+	
+	//styret
+	$page_content .= members_listing($members, "Styret");
+	
+	//Gruppeledere
+	$page_content .= members_listing($members, "Gruppeleder");
+	
+	//Medlemmer
+	$page_content .= members_listing($members, "Medlem");
+	
+	//Permisjon
+	$page_content .= members_listing($members, "Permisjon");
+	
 	return $page_content;
 }//_all()
 
