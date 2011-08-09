@@ -189,8 +189,8 @@ function start_members_all(){
 			
 			}
 		//Styret
-		$page_content = "<table class='memberlisting'>";
-		$page_content .= "<h2>$title</h2><table>";
+		$page_content = "<div class='start_members_group'>";
+		$page_content .= "<h2>$title</h2><table class='memberlisting'>";
 		$page_content .= "<tr>";
 		$page_content .= "<th>Fornavn</th>";
 		$page_content .= "<th>Etternavn</th>";
@@ -209,7 +209,7 @@ function start_members_all(){
 				$page_content .= "</tr>";	
 		
 			}
-		$page_content .= "</table>"; 
+		$page_content .= "</table></div>"; 
 	
 		return $page_content;
 	}
